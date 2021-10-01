@@ -1,6 +1,3 @@
-from mutagen.easyid3 import EasyID3
-import os
-
 '''
 I subscribe to 2-3 podcasts that distribute free songs. The mp3 files for these podcasts have several 
 problems that make them difficult to use as songs long term. For example, there are 
@@ -8,6 +5,10 @@ tags that identify them as podcasts, which causes iTunes to treat them different
 artist and track names are also assigned incorrectly. This script fixes the tags to 
 make it easier to keep the song permanently and find it easily in music players.
 '''
+
+from mutagen.easyid3 import EasyID3
+import os
+folder = r"F:\Temp\Music Working Files\2 Stars"
 
 def clip(string):
     '''
@@ -60,7 +61,6 @@ def parse_title(string, filename):
 
 
 # Obtain a list of mp3 files in the specified directory
-folder = "F:\Temp\Music Working Files\\4 Star"
 mp3_files = os.listdir(folder)
 mp3_files = [f for f in mp3_files if f[-4:] == ".mp3"]
 
