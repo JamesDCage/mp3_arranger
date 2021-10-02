@@ -1,11 +1,3 @@
-'''
-I subscribe to 2-3 podcasts that distribute free songs. The mp3 files for these podcasts have several 
-problems that make them difficult to use as songs long term. For example, there are 
-tags that identify them as podcasts, which causes iTunes to treat them differently. The
-artist and track names are also assigned incorrectly. This script fixes the tags to 
-make it easier to keep the song permanently and find it easily in music players.
-'''
-
 from mutagen.easyid3 import EasyID3
 import os
 folder = r"F:\Temp\Music Working Files\2 Stars"
@@ -36,7 +28,7 @@ def parse_title(string, filename):
     # These are the characters that separate artist name from song title 
     # in the podcasts I subscribe to.
     # I order the delimiters in the list so that the most unusual are first, to
-    # (hopefully) prevent problems with delimeters found multiple times.
+    # (hopefully) reduce problems with delimeters found multiple times.
     delimiters = [': ‘', ': “', ' - ', ': '] 
 
     for d in delimiters:
