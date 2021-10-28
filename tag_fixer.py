@@ -1,6 +1,6 @@
 from mutagen.easyid3 import EasyID3
 import os
-folder = r"F:\Temp\Music Working Files\2 Stars"
+folder = r"F:\Temp\Music Working Files\0 Stars"
 
 def clip(string):
     '''

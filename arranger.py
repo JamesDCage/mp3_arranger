@@ -1,4 +1,3 @@
-import eyed3
 import mutagen
 from mutagen.mp3 import MP3
 import os
@@ -14,71 +13,48 @@ def dosify_string(a_string):
     Make a string a safe file name for a 2012 Hyundai Santa Fe
     '''
 
-
     kill_words = ['The ', 'the ', ' ']
     clean_string = "".join(x for x in a_string if x not in '\'<>:"/|?*')
     clean_string = clean_string.title()
 
-    if len(clean_string) > 16:
+    if len(clean_string) > 19:
         for word in kill_words:
             clean_string = clean_string.replace(word, "")
 
     return clean_string
 
-prefix_list = [i for i in range(len(mp3_files))]
+def name_folder(prefix, title):
+    folder_len = 15
+    folder_max_len = 20
+
+    short_title = dosify_string(title)
+
+    return (prefix + short_title)[:folder_max_len]
+
+
+prefix_list = [f"{i + 1:02x} " for i in range(len(mp3_files))]
 
 random.shuffle(prefix_list)
 
 
+
+
 for i, file in enumerate(mp3_files):
-    prefix = f"{prefix_list[i]:02x}"[-2:] + " "
 
-    x = mutagen.File(os.path.join(stick_folder,file), easy=True)
-    # print(x.keys())
-    # print(prefix, file)
-    # print(dir(x))
-    # print(x.keys())
+    x = mutagen.File(os.path.join(stick_folder,file), easy=True)    
     title = x['title'][0]
-    artist = x['artist'][0]
-    new_file_name = dosify_string(title)
-    new_file_name = prefix + new_file_name[:16] + ".mp3"
-    os.rename(os.path.join(stick_folder, file), os.path.join(stick_folder, new_file_name))
-    # print(file, "\n", new_file_name, "\n\n")
+    artist = x['artist'][0]    
 
-  
+    subfolder = name_folder(prefix_list[i], artist)
 
-    # char_set = char_set | {x for x in title}
-        # print(x['title'], title)
-    # print(x['TOWN'])
-    # y = eyed3.load(os.path.join(stick_folder, file))
-    # x = eyed3.load(os.path.join(stick_folder, file))
-    # if x and x.tag.title:
-    #     try:
-    #         new_name = prefix + x.tag.title + ".mp3"
-    #         # print(new_name)
-    #     except: 
-    #         pass
-    # print(x.tag.title, x.tag.artist, x.tag.album)
-    # break
+    new_file_name = dosify_string(title)[:19] + ".mp3"
 
-# char_list = list(char_set)
-# char_list.sort()
-# print(char_list)
+    source = os.path.join(stick_folder, file)
 
-# for i, file in enumerate(mp3_files):
-#     prefix = f"{i:02x}"[-2:] + " "
-#     x = eyed3.load(os.path.join(stick_folder, file))
-#     if x and x.tag.title:
-#         try:
-#             new_name = prefix + x.tag.title + ".mp3"
-#             # print(new_name)
-#         except: 
-#             pass
-#     # print(x.tag.title, x.tag.artist, x.tag.album)
-#     # break
+    dest = os.path.join(stick_folder, subfolder, new_file_name)
 
-# new_names = [f"{i:02x}"[-2:] + " " + file for i, file in enumerate(mp3_files)]
+    os.mkdir(os.path.join(stick_folder, subfolder))
 
-# print(new_names)
-# for i in range(258):
-#     print(f"{i:02x}"[-2:])
+    os.rename(source, dest)
+
+   

@@ -1,4 +1,4 @@
-from tag_fixer import *
+# from tag_fixer import *
 
 test_strings = [
     'Fred again.. & The Blessed Madonna - Marea (We’ve Lost Dancing)',
@@ -15,10 +15,14 @@ test_strings = [
     "Ambar Lucid: ‘Get Lost In The Music’"
     ]
 
+
+for i in range(10):
+    print(f"{i+230:02x}")
+
 # for string in test_strings:
 #     print(string)
 #     print(clip(string), '\n')
 
-for string in test_strings:
-    print(string)
-    print(parse_title(string, string), '\n')
+# for string in test_strings:
+#     print(string)
+#     print(parse_title(string, string), '\n')
