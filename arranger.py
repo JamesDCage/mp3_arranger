@@ -37,7 +37,11 @@ prefix_list = [f"{i + 1:02x} " for i in range(len(mp3_files))]
 random.shuffle(prefix_list)
 
 
-
+## CLIP TRAILING SPACES FROM ARTIST'S NAME TO AVOID PROBLEMS!
+#
+#
+#
+#
 
 for i, file in enumerate(mp3_files):
 
