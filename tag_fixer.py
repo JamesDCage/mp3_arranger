@@ -64,6 +64,7 @@ for file in mp3_files:
     album = y['album'][0]
     title = y['title'][0]
     genre = y['genre'][0]
+    artist = y['artist'][0] # Restore this if the title does not parse
 
     # Delete the tag, which includes unwanted information
     y.delete()
@@ -73,6 +74,7 @@ for file in mp3_files:
         y['artist'], y['title'] = x
     else:
         y['title'] = title
+        y['artist'] = artist
 
     # Add back tag info saved earlier
     y['date'] = date
