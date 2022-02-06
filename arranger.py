@@ -5,7 +5,7 @@ import random
 
 stick_folder = "F:\Temp\Stick Setup MP3s"
 mp3_files = os.listdir(stick_folder)
-mp3_files = [f for f in mp3_files if f[-4:] == ".mp3"]
+mp3_files = [f for f in mp3_files if f[-4:].upper() == ".MP3"]
 char_set = set()
 
 def dosify_string(a_string):
@@ -37,17 +37,12 @@ prefix_list = [f"{i + 1:02x} " for i in range(len(mp3_files))]
 random.shuffle(prefix_list)
 
 
-## CLIP TRAILING SPACES FROM ARTIST'S NAME TO AVOID PROBLEMS!
-#
-#
-#
-#
-
 for i, file in enumerate(mp3_files):
 
     x = mutagen.File(os.path.join(stick_folder,file), easy=True)    
     title = x['title'][0]
-    artist = x['artist'][0]    
+    ## CLIP TRAILING SPACES FROM ARTIST'S NAME TO AVOID PROBLEMS
+    artist = x['artist'][0].strip()
 
     subfolder = name_folder(prefix_list[i], artist)
 
