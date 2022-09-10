@@ -1,7 +1,77 @@
 from mutagen.easyid3 import EasyID3
 import os
+import tkinter as tk
+from tkinter import filedialog
+
 
 FOLDER = r"F:\Temp\Music Working Files\0 Stars"
+
+def main():
+    folder = select_folder(initialdir=r'F:\Temp\Music Working Files\0 Stars')
+
+    # Obtain a list of mp3 files in the specified directory
+    mp3_files = get_files(folder)
+
+    for file in mp3_files:
+        y = EasyID3(os.path.join(FOLDER, file))  # Get the tag
+
+        # Save the tag info you want to keep
+        date = y["date"][0]
+        album = y["album"][0]
+        title = y["title"][0]
+        genre = y["genre"][0]
+        artist = y["artist"][0]  # Restore this if the title does not parse
+
+        # Delete the tag, which includes unwanted information
+        y.delete()
+
+        # Obtain the correct artist name and track title from the podcast title tag
+        if x := parse_title(title, file):  # I love the walrus operator.
+            y["artist"], y["title"] = x
+        else:
+            y["title"] = title
+            y["artist"] = artist
+
+        # Add back tag info saved earlier
+        y["date"] = date
+        y["album"] = album
+        y["albumartist"] = "Jimmy"
+        y["genre"] = genre
+
+        y.save()  # Save the new tag
+
+def dump_file(file_name, folder_name):
+    ''' Move a problem file to a sub-directory'''
+    # Create folder if necessary
+
+    # Move file to folder
+
+    pass
+
+def select_folder(initialdir=None):
+    # Provide window to browse files. First, supress tkinter base window
+    root = tk.Tk()
+    root.withdraw()
+
+    folder = filedialog.askdirectory(initialdir=initialdir)
+    return folder
+
+
+def get_files(folder):
+    # Obtain a list of mp3 files in the specified directory
+    mp3_files = os.listdir(folder)
+    mp3_files = [f for f in mp3_files if f[-4:] == ".mp3"]
+    return mp3_files
+
+
+def get_titles(folder, file_list):
+
+    title_list = [EasyID3(os.path.join(folder, file))["title"][0] for file in file_list]
+
+    return title_list
+
+
+
 
 
 def clip(string):
@@ -54,34 +124,7 @@ def parse_title(string, filename):
     return None
 
 
-# Obtain a list of mp3 files in the specified directory
-mp3_files = os.listdir(FOLDER)
-mp3_files = [f for f in mp3_files if f[-4:] == ".mp3"]
 
-for file in mp3_files:
-    y = EasyID3(os.path.join(FOLDER, file))  # Get the tag
 
-    # Save the tag info you want to keep
-    date = y["date"][0]
-    album = y["album"][0]
-    title = y["title"][0]
-    genre = y["genre"][0]
-    artist = y["artist"][0]  # Restore this if the title does not parse
-
-    # Delete the tag, which includes unwanted information
-    y.delete()
-
-    # Obtain the correct artist name and track title from the podcast title tag
-    if x := parse_title(title, file):  # I love the walrus operator.
-        y["artist"], y["title"] = x
-    else:
-        y["title"] = title
-        y["artist"] = artist
-
-    # Add back tag info saved earlier
-    y["date"] = date
-    y["album"] = album
-    y["albumartist"] = "Jimmy"
-    y["genre"] = genre
-
-    y.save()  # Save the new tag
+if __name__ == '__main__':
+    main()
