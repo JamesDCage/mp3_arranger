@@ -4,16 +4,14 @@ import tkinter as tk
 from tkinter import filedialog
 
 
-FOLDER = r"F:\Temp\Music Working Files\0 Stars"
-
 def main():
-    folder = select_folder(initialdir=r'F:\Temp\Music Working Files\0 Stars')
+    folder = select_folder(initialdir=r"F:\Temp\Music Working Files\0 Stars")
 
     # Obtain a list of mp3 files in the specified directory
     mp3_files = get_files(folder)
 
     for file in mp3_files:
-        y = EasyID3(os.path.join(FOLDER, file))  # Get the tag
+        y = EasyID3(os.path.join(folder, file))  # Get the tag
 
         # Save the tag info you want to keep
         date = y["date"][0]
@@ -25,28 +23,39 @@ def main():
         # Delete the tag, which includes unwanted information
         y.delete()
 
-        # Obtain the correct artist name and track title from the podcast title tag
-        if x := parse_title(title, file):  # I love the walrus operator.
-            y["artist"], y["title"] = x
-        else:
-            y["title"] = title
-            y["artist"] = artist
-
         # Add back tag info saved earlier
         y["date"] = date
         y["album"] = album
         y["albumartist"] = "Jimmy"
         y["genre"] = genre
 
-        y.save()  # Save the new tag
+        # Obtain the correct artist name and track title from the podcast title tag
+        if x := parse_title(title, file):  # I love the walrus operator.
+            y["artist"], y["title"] = x
+            y.save()
+        else:
+            y["title"] = title
+            y["artist"] = artist
+            y.save()
+            dump_file(file, folder)
+
 
 def dump_file(file_name, folder_name):
-    ''' Move a problem file to a sub-directory'''
+    """Move a problem file to a sub-directory"""
+
+    dump_folder = os.path.join(folder_name, "Problem Files")
+
     # Create folder if necessary
+    if not os.path.isdir(dump_folder):
+        os.makedirs(dump_folder)
 
     # Move file to folder
+    source = os.path.join(folder_name, file_name)
+    dest = os.path.join(dump_folder, file_name)
+    os.rename(source, dest)
 
-    pass
+    return
+
 
 def select_folder(initialdir=None):
     # Provide window to browse files. First, supress tkinter base window
@@ -69,9 +78,6 @@ def get_titles(folder, file_list):
     title_list = [EasyID3(os.path.join(folder, file))["title"][0] for file in file_list]
 
     return title_list
-
-
-
 
 
 def clip(string):
@@ -124,7 +130,5 @@ def parse_title(string, filename):
     return None
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
