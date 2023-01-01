@@ -1,9 +1,10 @@
 import os
 import random
-import mutagen
-from mutagen.mp3 import MP3
 import tkinter as tk
 from tkinter import filedialog
+
+import mutagen
+from mutagen.mp3 import MP3
 
 
 def select_folder(initialdir=None):
@@ -40,10 +41,9 @@ def name_folder(prefix, _title):
 
 
 def main():
-    stick_folder = select_folder(r"F:\Temp\Stick Source Files")
+    stick_folder = select_folder(r"F:\Temp\Music Working Files\Stick Play")
     mp3_files = os.listdir(stick_folder)
     mp3_files = [f for f in mp3_files if f[-4:].upper() == ".MP3"]
-    # char_set = set()
 
     prefix_list = [f"{i + 1:02x} " for i in range(len(mp3_files))]
 

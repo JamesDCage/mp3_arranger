@@ -103,7 +103,7 @@ def parse_title(string, filename):
 
     string = clip(string)  # Get rid of featured artists if present.
 
-    # These are the characters that separate artist name from song title
+    # These are the strings that separate artist name from song title
     # in the podcasts I subscribe to.
     # I order the delimiters in the list so that the most unusual are first, to
     # (hopefully) reduce problems with delimeters found multiple times.
